@@ -1,6 +1,6 @@
 <template>
   <div class="topbar bg-black py-2 px-3 d-flex ai-center">
-    <img src="../../assets/logo.png" height="30" />
+    <img src="../../assets/images/logo.png" height="30" />
     <div class="px-2 flex-1">
       <div class="text-white">王者荣耀</div>
       <div class="text-grey-1 fs-xxs">团队成就更多</div>
@@ -8,7 +8,7 @@
     <button type="button" class="btn bg-primary">立即下载</button>
   </div>
   <div class="bg-primary py-2 pt-3">
-    <div class="nav d-flex text-white jc-around">
+    <div class="nav nav-inverse pb-2 jc-around">
       <div class="nav-item active">
         <router-link class="nav-link" to="/home">
           <div>首页</div>
@@ -41,7 +41,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.nav-link {
-  color: #fff;
-}
+// .nav-link {
+//   color: #fff;
+// }
 </style>
