@@ -58,6 +58,14 @@ a{
   }
 }
 
+// 文本溢出显示省略号
+.text-ellipsis{
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 // flex
 .d-flex{
   display: flex;

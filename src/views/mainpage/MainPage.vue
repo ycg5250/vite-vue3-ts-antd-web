@@ -41,7 +41,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-// .nav-link {
-//   color: #fff;
-// }
+.topbar {
+  // 吸顶效果
+  position: sticky;
+  top: 0;
+  z-index: 888;
+}
 </style>

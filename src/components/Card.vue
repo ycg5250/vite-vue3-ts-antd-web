@@ -1,9 +1,9 @@
 <template>
   <div class="card bg-white p-3 mt-3">
     <div class="card-header d-flex ai-center pb-3">
-      <i class="iconfont" :class="`icon-${icons[0]}`"></i>
+      <i class="iconfont" :class="`icon-${icon}`"></i>
       <div class="flex-1 px-2 fs-xxl">{{ title }}</div>
-      <i class="iconfont" :class="`icon-${icons[1]}`"></i>
+      <i class="iconfont icon-moreread"></i>
     </div>
     <div class="card-body pt-3">
       <slot> </slot>
@@ -17,7 +17,7 @@ export default defineComponent({
   name: 'card',
   props: {
     title: { type: String, require: true },
-    icons: { type: Array, require: true },
+    icon: { type: String, require: true },
   },
   setup() {},
 })

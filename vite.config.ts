@@ -8,6 +8,14 @@ export default defineConfig({
     host: true,
     port: 3000,
     open: true,
+    proxy: {
+      '/web/api': {
+        target: 'http://localhost:8000',
+        // ws: true,
+        changeOrigin: true, //允许跨域
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    }
   }
 
 })
