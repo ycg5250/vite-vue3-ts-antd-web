@@ -21,6 +21,9 @@ a{
   text-decoration: none;
   // color: #fff;
 }
+p{
+  line-height: 1.5rem;
+}
 
 // width
 .w-100{
@@ -176,5 +179,12 @@ a{
     width: .7692rem;
     height: .7692rem;
     background-position: 38.577% 52.076%;
+  }
+}
+
+// borders
+@each $var in (top,right,bottom,left) {
+  .border-#{$var}{
+    border-#{$var}: .0769rem $border-color solid
   }
 }

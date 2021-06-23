@@ -29,7 +29,8 @@
   <!-- 新闻资讯 card-->
   <com-listcard icon="menu" title="新闻资讯" :categories="news">
     <template #items="{ category }">
-      <div
+      <router-link
+        :to="`/articles/${item._id}`"
         class="py-2 d-flex fs-lg"
         v-for="(item, i) of category.newsList"
         :key="i"
@@ -39,64 +40,63 @@
           item.title
         }}</span>
         <span class="text-grey fs-sm">{{ item.createdAt }}</span>
-      </div>
+      </router-link>
     </template>
   </com-listcard>
 
   <!-- 英雄列表 card-->
-  <com-listcard icon="card-hero" title="英雄列表" :categories="news">
+  <com-listcard icon="card-hero" title="英雄列表" :categories="heroes">
     <template #items="{ category }">
-      <div
-        class="py-2 d-flex fs-lg"
-        v-for="(item, i) of category.newsList"
-        :key="i"
-      >
-        <span class="text-info">{{ `[${item.categoryName}]` }}</span>
-        <span class="flex-1 text-dark-1 text-ellipsis px-2">{{
-          item.title
-        }}</span>
-        <span class="text-grey fs-sm">{{ item.createdAt }}</span>
+      <div class="d-flex flex-wrap" style="margin: 0 -0.5rem">
+        <router-link
+          :to="`/heroes/${hero._id}`"
+          class="py-2 text-center p-2"
+          style="width: 20%"
+          v-for="(hero, i) of category.heroList"
+          :key="i"
+        >
+          <img :src="hero.avatar" style="width: 100%" alt="" />
+          <div class="text-black">{{ hero.name }}</div>
+        </router-link>
       </div>
     </template>
   </com-listcard>
+  <div>1111</div>
+  <div>1111</div>
+  <div>1111</div>
+  <div>1111</div>
+  <div>1111</div>
+  <div>1111</div>
+  <div>1111</div>
+  <div>1111</div>
+  <div>1111</div>
 </template>
 <script lang='ts'>
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
 import dayjs from 'dayjs'
 
-import { reqNewsData } from '../../api'
-
-interface NewsData {
-  news: News[]
-}
-
-interface News {
-  name: string
-  newsList: NewsList[]
-}
-
-interface NewsList {
-  categoryName: string
-  title: string
-  createdAt: string
-}
+import { reqHeroesData, reqNewsData } from '../../api'
+import { HomeData, News, Heroes } from '../../typings'
 
 export default defineComponent({
   setup() {
-    const newsData: NewsData = reactive({
+    const state = reactive<HomeData>({
       news: [],
+      heroes: [],
     })
 
     onMounted(() => {
       getNewsData()
+      getHeroesData()
     })
 
     /**发送请求获取新闻资讯内容 */
     const getNewsData = async () => {
       const res = (await reqNewsData()) as News[]
-      newsData.news = res
+      // console.log(res)
+      state.news = res
       // 格式化日期
-      newsData.news.map((item) => {
+      state.news.map((item) => {
         item.newsList.map((slide) => {
           slide.createdAt = dayjs(slide.createdAt).format('MM/DD')
           return slide
@@ -107,12 +107,16 @@ export default defineComponent({
     }
 
     /**请求获取英雄数据 */
-    const getHeroesData = () => {
-      console.log('getHeroesData')
+    const getHeroesData = async () => {
+      // console.log('getHeroesData')
+      const res = (await reqHeroesData()) as Heroes[]
+      state.heroes = res
+
+      // console.log(state.heroes)
     }
 
     return {
-      ...toRefs(newsData),
+      ...toRefs(state),
       getNewsData,
       getHeroesData,
     }

@@ -12,7 +12,12 @@
       </div>
     </div>
     <!-- 卡片轮播 -->
-    <swiper class="pt-3" @slideChange="onSlideChange" @swiper="onSwiper">
+    <swiper
+      class="pt-3"
+      @slideChange="onSlideChange"
+      :autoHeight="true"
+      @swiper="onSwiper"
+    >
       <swiper-slide v-for="(category, index) of categories" :key="index">
         <slot name="items" :category="category"></slot>
       </swiper-slide>
@@ -20,7 +25,14 @@
   </com-card>
 </template>
 <script lang='ts'>
-import { defineComponent, ref, reactive, toRefs } from 'vue'
+import {
+  defineComponent,
+  ref,
+  reactive,
+  toRefs,
+  onMounted,
+  nextTick,
+} from 'vue'
 
 export default defineComponent({
   name: 'listcard',
@@ -32,24 +44,30 @@ export default defineComponent({
   setup(props) {
     // console.log(props)
     const active = ref<number>(0)
-    const data = reactive({
+    const state = reactive({
       controlledSwiper: null,
     })
 
     const onSlideChange = () => {
       // console.log('onSlideChange')
-      active.value = data.controlledSwiper.realIndex
+      active.value = state.controlledSwiper.realIndex
     }
     const onSwiper = (swiper) => {
       // console.log(swiper)
-      data.controlledSwiper = swiper
+      state.controlledSwiper = swiper
+      // state.controlledSwiper.height = 182
     }
+
+    onMounted(() => {
+      nextTick()
+    })
     return {
       active,
       onSlideChange,
       onSwiper,
-      ...toRefs(data),
+      ...toRefs(state),
     }
   },
 })
 </script>
+

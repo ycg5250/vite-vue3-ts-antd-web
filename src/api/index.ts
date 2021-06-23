@@ -11,3 +11,12 @@ const BASE_URL = '/web/api'
 /**获取新闻资讯内容 */
 export const reqNewsData = () => ajax(BASE_URL + '/news/list')
 
+/**获取英雄列表数据 */
+export const reqHeroesData = () => ajax(BASE_URL + '/heroes/list')
+
+/**获取文章数据 */
+export const reqArtDetail = (data: object) => ajax(BASE_URL + '/articles', data)
+
+/**获取英雄详情数据 */
+export const reqHeroDetail = (data: object) => ajax(BASE_URL + '/heroes', data)
+
