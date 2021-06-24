@@ -32,7 +32,9 @@ interface HeroList {
 export interface Hero {
   name: string
   avatar: string
+  banner: string
   title: string
+  categories: []
   scores: Scores
   skills: Skills[]
   items1: []

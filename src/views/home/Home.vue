@@ -46,6 +46,14 @@
 
   <!-- 英雄列表 card-->
   <com-listcard icon="card-hero" title="英雄列表" :categories="heroes">
+    <!-- 新英雄暂时用静态图，后期从服务端配置 -->
+    <div class="mb-3">
+      <img
+        class="w-100 pb-3 border-bottom"
+        src="../../assets/images/newhero.jpg"
+        alt=""
+      />
+    </div>
     <template #items="{ category }">
       <div class="d-flex flex-wrap" style="margin: 0 -0.5rem">
         <router-link

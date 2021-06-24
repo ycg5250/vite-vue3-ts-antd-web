@@ -12,7 +12,7 @@ import Hero from '../views/hero/Hero.vue'
 const routes = [
   {
     path: '/', component: MainPage, children: [
-      // { path: '', redirect: '/home' },
+      { path: '', redirect: '/home' },
       { path: '/home', component: Home, alian: 'home' },
       { path: '/strategycenter', component: StrategyCenter, alias: 'StrategyCenter' },
       { path: '/matchcenter', component: MatchCenter, alias: 'MatchCenter' },

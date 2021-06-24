@@ -1,5 +1,6 @@
 <template>
   <com-card :icon="icon" :title="title">
+    <slot></slot>
     <div class="nav jc-between">
       <div
         class="nav-item"
