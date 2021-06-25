@@ -56,6 +56,8 @@ interface Skills {
   icon: string
   name: string
   description: string
+  cost: string
+  delay: string
 }
 
 interface Items1 {
