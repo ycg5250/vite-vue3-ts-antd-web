@@ -15,14 +15,17 @@
   <!-- 图标导航 -->
   <div class="nav-icons bg-white mt-3 pt-3 text-center">
     <div class="d-flex flex-wrap">
-      <div class="nav-item mb-3" v-for="item in 10" :key="item">
-        <i class="spirit spirit-news"></i>
-        <div class="py-2">爆料站</div>
+      <div class="nav-item mb-2" v-for="item in iconnavigation" :key="item">
+        <i class="spirit" :class="item.iconName"></i>
+        <div class="py-2">{{ item.name }}</div>
       </div>
     </div>
     <div class="bg-light py-2 fs-sm">
-      <i class="spirit spirit-arrow mr-2"></i>
-      <span>收起</span>
+      <i
+        class="spirit mr-2"
+        :class="isPullUp ? 'spirit-arrow-up' : 'spirit-arrow'"
+      ></i>
+      <span @click="onPullUp">收起</span>
     </div>
   </div>
 
@@ -35,7 +38,9 @@
         v-for="(item, i) of category.newsList"
         :key="i"
       >
-        <span class="text-info">{{ `[${item.categoryName}]` }}</span>
+        <span class="text-primary news-category fs-sm px-1">{{
+          item.categoryName
+        }}</span>
         <span class="flex-1 text-dark-1 text-ellipsis px-2">{{
           item.title
         }}</span>
@@ -69,15 +74,11 @@
       </div>
     </template>
   </com-listcard>
-  <div>1111</div>
-  <div>1111</div>
-  <div>1111</div>
-  <div>1111</div>
-  <div>1111</div>
-  <div>1111</div>
-  <div>1111</div>
-  <div>1111</div>
-  <div>1111</div>
+  <div class="bg-white py-2 text-center">
+    <router-link to="/strategycenter" class="text-grey fs-md">
+      加载更多内容
+    </router-link>
+  </div>
 </template>
 <script lang='ts'>
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
@@ -85,9 +86,12 @@ import dayjs from 'dayjs'
 
 import { reqHeroesData, reqNewsData } from '../../api'
 import { HomeData, News, Heroes } from '../../typings'
+import { ICON_NAVIGATION } from '../../utils/constants'
 
 export default defineComponent({
   setup() {
+    const isPullUp = ref<boolean>(true) //初始是收起状态
+    const iconnavigation = ref<object[]>([])
     const state = reactive<HomeData>({
       news: [],
       heroes: [],
@@ -96,6 +100,7 @@ export default defineComponent({
     onMounted(() => {
       getNewsData()
       getHeroesData()
+      onPullUp()
     })
 
     /**发送请求获取新闻资讯内容 */
@@ -123,10 +128,22 @@ export default defineComponent({
       // console.log(state.heroes)
     }
 
+    const onPullUp = () => {
+      if (isPullUp.value) {
+        iconnavigation.value = ICON_NAVIGATION.slice(0, 4)
+      } else {
+        iconnavigation.value = ICON_NAVIGATION.slice(0, 12)
+      }
+      isPullUp.value = !isPullUp.value
+    }
+
     return {
       ...toRefs(state),
       getNewsData,
       getHeroesData,
+      onPullUp,
+      iconnavigation,
+      isPullUp,
     }
   },
 })
@@ -152,7 +169,11 @@ export default defineComponent({
     }
   }
 }
+.news-category {
+  border: 0.0769rem solid map-get($colors, 'primary');
+}
 .nav-icons {
+  // overflow: auto;
   border-top: 0.0769rem solid $border-color;
   border-bottom: 0.0769rem solid $border-color;
   .nav-item {

@@ -9,21 +9,25 @@
   </div>
   <div class="bg-primary py-2 pt-3">
     <div class="nav nav-inverse pb-2 jc-around">
-      <div class="nav-item active">
-        <router-link class="nav-link" to="/home">
-          <div>首页</div>
-        </router-link>
+      <div class="nav-item" :class="$route.path === '/home' ? 'active' : ''">
+        <router-link class="nav-link" to="/home"> 首页 </router-link>
       </div>
-      <div class="nav-item">
+      <div
+        class="nav-item"
+        :class="$route.path === '/strategycenter' ? 'active' : ''"
+      >
         <router-link class="nav-link" to="/strategycenter">
           攻略中心
         </router-link>
       </div>
-      <div class="nav-item">
+      <div
+        class="nav-item"
+        :class="$route.path === '/matchcenter' ? 'active' : ''"
+      >
         <router-link class="nav-link" to="/matchcenter"> 赛事中心 </router-link>
       </div>
-      <div class="nav-item">
-        <router-link class="nav-link" to="/matchcenter"> IP新游 </router-link>
+      <div class="nav-item" :class="$route.path === '/newgame' ? 'active' : ''">
+        <router-link class="nav-link" to="/newgame"> IP新游 </router-link>
       </div>
     </div>
   </div>
@@ -34,9 +38,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'mainpage',
-  setup() {
-    console
-  },
+  setup() {},
 })
 </script>
 
