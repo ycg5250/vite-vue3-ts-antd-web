@@ -26,49 +26,42 @@
   </com-card>
 </template>
 <script lang='ts'>
-import {
-  defineComponent,
-  ref,
-  reactive,
-  toRefs,
-  onMounted,
-  nextTick,
-} from 'vue'
+  import { defineComponent, ref, reactive, toRefs, nextTick } from 'vue'
 
-export default defineComponent({
-  name: 'listcard',
-  props: {
-    title: { type: String, require: true },
-    icon: { type: String, require: true },
-    categories: { type: Array, require: true },
-  },
-  setup(props) {
-    // console.log(props)
-    const active = ref<number>(0)
-    const state = reactive({
-      controlledSwiper: null,
-    })
+  export default defineComponent({
+    name: 'listcard',
+    props: {
+      title: { type: String, require: true },
+      icon: { type: String, require: true },
+      categories: { type: Array, require: true },
+    },
+    setup(props) {
+      // console.log(props)
+      const active = ref<number>(0)
+      const state = reactive({
+        controlledSwiper: null,
+      })
 
-    const onSlideChange = () => {
-      // console.log('onSlideChange')
-      active.value = state.controlledSwiper.realIndex
-    }
-    const onSwiper = (swiper) => {
-      // console.log(swiper)
-      state.controlledSwiper = swiper
-      // state.controlledSwiper.height = 182
-    }
+      const onSlideChange = () => {
+        // nextTick(() => {
+        //   active.value = (state.controlledSwiper as any).realIndex
+        // })
+        active.value = (state.controlledSwiper as any).realIndex
+      }
+      const onSwiper = (swiper: any) => {
+        // nextTick(() => {
+        //   state.controlledSwiper = swiper
+        // })
+        state.controlledSwiper = swiper
+      }
 
-    onMounted(() => {
-      nextTick()
-    })
-    return {
-      active,
-      onSlideChange,
-      onSwiper,
-      ...toRefs(state),
-    }
-  },
-})
+      return {
+        active,
+        onSlideChange,
+        onSwiper,
+        ...toRefs(state),
+      }
+    },
+  })
 </script>
 
