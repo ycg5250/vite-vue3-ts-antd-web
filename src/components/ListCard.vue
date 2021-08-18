@@ -18,6 +18,7 @@
       @slideChange="onSlideChange"
       :autoHeight="true"
       @swiper="onSwiper"
+      v-if="categories.length > 0"
     >
       <swiper-slide v-for="(category, index) of categories" :key="index">
         <slot name="items" :category="category"></slot>
@@ -26,7 +27,7 @@
   </com-card>
 </template>
 <script lang='ts'>
-  import { defineComponent, ref, reactive, toRefs, nextTick } from 'vue'
+  import { defineComponent, ref, reactive, toRefs } from 'vue'
 
   export default defineComponent({
     name: 'listcard',
@@ -52,6 +53,7 @@
         // nextTick(() => {
         //   state.controlledSwiper = swiper
         // })
+        console.log('==', 222)
         state.controlledSwiper = swiper
       }
 
