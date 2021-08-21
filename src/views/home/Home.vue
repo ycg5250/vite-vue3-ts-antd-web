@@ -81,108 +81,111 @@
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
-import dayjs from 'dayjs'
+  import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
+  import dayjs from 'dayjs'
 
-import { reqHeroesData, reqNewsData } from '../../api'
-import { HomeData, News, Heroes } from '../../typings'
-import { ICON_NAVIGATION } from '../../utils/constants'
+  import { reqHeroseData, reqNewsData } from '../../api/home'
+  import { HomeData, News, Heroes } from '../../typings'
+  import { ICON_NAVIGATION } from '../../utils/constants'
 
-export default defineComponent({
-  setup() {
-    const isPullUp = ref<boolean>(true) //初始是收起状态
-    const iconnavigation = ref<object[]>([])
-    const state = reactive<HomeData>({
-      news: [],
-      heroes: [],
-    })
-
-    onMounted(() => {
-      getNewsData()
-      getHeroesData()
-      onPullUp()
-    })
-
-    /**发送请求获取新闻资讯内容 */
-    const getNewsData = async () => {
-      const res = (await reqNewsData()) as News[]
-      // console.log(res)
-      state.news = res
-      // 格式化日期
-      state.news.map((item) => {
-        item.newsList.map((slide) => {
-          slide.createdAt = dayjs(slide.createdAt).format('MM/DD')
-          return slide
-        })
-        return item
+  export default defineComponent({
+    setup() {
+      const isPullUp = ref<boolean>(true) //初始是收起状态
+      const iconnavigation = ref<object[]>([])
+      const state = reactive<HomeData>({
+        news: [],
+        heroes: [],
       })
-      // console.log('getNewsData', newsData.news)
-    }
 
-    /**请求获取英雄数据 */
-    const getHeroesData = async () => {
-      // console.log('getHeroesData')
-      const res = (await reqHeroesData()) as Heroes[]
-      state.heroes = res
+      onMounted(() => {
+        getNewsData()
+        getHeroesData()
+        onPullUp()
+      })
 
-      // console.log(state.heroes)
-    }
-
-    const onPullUp = () => {
-      if (isPullUp.value) {
-        iconnavigation.value = ICON_NAVIGATION.slice(0, 4)
-      } else {
-        iconnavigation.value = ICON_NAVIGATION.slice(0, 12)
+      /**发送请求获取新闻资讯内容 */
+      const getNewsData = async () => {
+        const res = await reqNewsData()
+        // console.log(res)
+        state.news = res.data
+        // 格式化日期
+        state.news.map((item) => {
+          item.newsList.map((slide) => {
+            slide.createdAt = dayjs(slide.createdAt).format('MM/DD')
+            return slide
+          })
+          return item
+        })
+        // console.log('getNewsData', newsData.news)
       }
-      isPullUp.value = !isPullUp.value
-    }
 
-    return {
-      ...toRefs(state),
-      getNewsData,
-      getHeroesData,
-      onPullUp,
-      iconnavigation,
-      isPullUp,
-    }
-  },
-})
+      /**请求获取英雄数据 */
+      const getHeroesData = async () => {
+        // console.log('getHeroesData')
+        // const res = (await reqHeroesData()) as Heroes[]
+        const res = await reqHeroseData()
+        // console.log(res)
+        if (res.status === 200) {
+          state.heroes = res.data
+        }
+        // console.log(state.heroes)
+      }
+
+      const onPullUp = () => {
+        if (isPullUp.value) {
+          iconnavigation.value = ICON_NAVIGATION.slice(0, 4)
+        } else {
+          iconnavigation.value = ICON_NAVIGATION.slice(0, 12)
+        }
+        isPullUp.value = !isPullUp.value
+      }
+
+      return {
+        ...toRefs(state),
+        getNewsData,
+        getHeroesData,
+        onPullUp,
+        iconnavigation,
+        isPullUp,
+      }
+    },
+  })
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/variables';
-@import 'swiper/components/pagination/pagination.scss';
-// 重置轮播图 pagination 分页的的样式
-.swiper-pagination {
-  text-align: right;
-  margin-left: -1.5385rem;
-  // 分页 pagination 的底色
-  .swiper-pagination-bullet {
-    border-radius: 10%;
-    width: 0.7692rem;
-    // 使用scss定义好的颜色
-    background: map-get($colors, 'white');
-    opacity: 1;
-    // 分页 pagination 激活的颜色
-    &.swiper-pagination-bullet-active {
-      background: map-get($colors, 'info');
+  @import '../../assets/scss/variables';
+  @import 'swiper/components/pagination/pagination.scss';
+  // 重置轮播图 pagination 分页的的样式
+  .swiper-pagination {
+    text-align: right;
+    margin-left: -1.5385rem;
+    // 分页 pagination 的底色
+    .swiper-pagination-bullet {
+      border-radius: 10%;
+      width: 0.7692rem;
+      // 使用scss定义好的颜色
+      background: map-get($colors, 'white');
+      opacity: 1;
+      // 分页 pagination 激活的颜色
+      &.swiper-pagination-bullet-active {
+        background: map-get($colors, 'info');
+      }
     }
   }
-}
-.news-category {
-  border: 0.0769rem solid map-get($colors, 'primary');
-}
-.nav-icons {
-  // overflow: auto;
-  border-top: 0.0769rem solid $border-color;
-  border-bottom: 0.0769rem solid $border-color;
-  .nav-item {
-    width: 25%;
-    border-right: 0.0769rem solid $border-color;
-    // css3 选择第几个不需要边框
-    &:nth-child(4n) {
-      border-right: none;
+  .news-category {
+    border: 0.0769rem solid map-get($colors, 'primary');
+  }
+  .nav-icons {
+    // overflow: auto;
+    border-top: 0.0769rem solid $border-color;
+    border-bottom: 0.0769rem solid $border-color;
+    .nav-item {
+      width: 25%;
+      border-right: 0.0769rem solid $border-color;
+      // css3 选择第几个不需要边框
+      &:nth-child(4n) {
+        border-right: none;
+      }
     }
   }
-}
 </style>

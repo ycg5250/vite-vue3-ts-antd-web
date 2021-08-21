@@ -53,7 +53,6 @@
         // nextTick(() => {
         //   state.controlledSwiper = swiper
         // })
-        console.log('==', 222)
         state.controlledSwiper = swiper
       }
 
