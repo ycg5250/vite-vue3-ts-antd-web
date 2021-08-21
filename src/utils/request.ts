@@ -41,7 +41,8 @@ instance.interceptors.request.use(
           query.push(i + '=' + value)
         }
       }
-      config.url = '?' + query.join('&')
+
+      config.url += '?' + query.join('&')
     }
     // 在发送请求之前做些什么
     return config

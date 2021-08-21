@@ -1,11 +1,15 @@
 
 import request from '../utils/request'
 
+const BASE_URL = '/web/api'
+
+/**获取英雄列表数据 */
 export const reqHeroseData = () => request({
-  url: '/web/api/heroes/list'
+  url: BASE_URL + '/heroes/list'
 })
 
 
+/**获取新闻资讯内容 */
 export const reqNewsData = () => request({
-  url: '/web/api/news/list'
+  url: BASE_URL + '/news/list'
 })

@@ -166,105 +166,108 @@
   </div>
 </template>
 <script lang='ts'>
-import {
-  defineComponent,
-  onMounted,
-  reactive,
-  toRefs,
-  ref,
-  computed,
-} from 'vue'
-import { useRoute } from 'vue-router'
-import { reqHeroDetail } from '../../api'
-import { Hero } from '../../typings'
+  import {
+    defineComponent,
+    onMounted,
+    reactive,
+    toRefs,
+    ref,
+    computed,
+  } from 'vue'
+  import { useRoute } from 'vue-router'
+  // import { reqHeroDetail } from '../../api'
+  import { reqHeroDetail } from '../../api/hero'
+  import { Hero } from '../../typings'
 
-export default defineComponent({
-  setup() {
-    const currentSkillsIndex = ref<number>(0)
-    const plain = ref<boolean>(true)
-    const state = reactive<{ hero: Hero }>({
-      hero: {
-        name: '',
-        avatar: '',
-        banner: '',
-        title: '',
-        categories: [],
-        skills: [{ name: '', icon: '', cost: '', delay: '', description: '' }],
-        scores: { difficult: 0, skills: 0, attack: 0, survive: 0 },
-        items1: [],
-        items2: [],
-        usageTips: '',
-        battleTips: '',
-        teamTips: '',
-        partners: [],
-      },
-    })
+  export default defineComponent({
+    setup() {
+      const currentSkillsIndex = ref<number>(0)
+      const plain = ref<boolean>(true)
+      const state = reactive<{ hero: Hero }>({
+        hero: {
+          name: '',
+          avatar: '',
+          banner: '',
+          title: '',
+          categories: [],
+          skills: [{ name: '', icon: '', cost: '', delay: '', description: '' }],
+          scores: { difficult: 0, skills: 0, attack: 0, survive: 0 },
+          items1: [],
+          items2: [],
+          usageTips: '',
+          battleTips: '',
+          teamTips: '',
+          partners: [],
+        },
+      })
 
-    const route = useRoute()
+      const route = useRoute()
 
-    const currentSkill = computed(() => {
-      return state.hero.skills[currentSkillsIndex.value]
-    })
+      const currentSkill = computed(() => {
+        return state.hero.skills[currentSkillsIndex.value]
+      })
 
-    onMounted(() => {
-      getHeroDetail()
-    })
+      onMounted(() => {
+        getHeroDetail()
+      })
 
-    /** 获取英雄详情 */
-    const getHeroDetail = async () => {
-      const res = (await reqHeroDetail({ id: route.params.id })) as Hero
-      state.hero = res
-      console.log('getHeroDetail', res)
-    }
+      /** 获取英雄详情 */
+      const getHeroDetail = async () => {
+        const res = await reqHeroDetail({ id: route.params.id })
+        if (res.status === 200) {
+          state.hero = res.data
+          console.log('getHeroDetail', res)
+        }
+      }
 
-    return {
-      ...toRefs(state),
-      getHeroDetail,
-      currentSkillsIndex,
-      currentSkill,
-      plain,
-    }
-  },
-})
+      return {
+        ...toRefs(state),
+        getHeroDetail,
+        currentSkillsIndex,
+        currentSkill,
+        plain,
+      }
+    },
+  })
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/variables';
-.top {
-  height: 46vw;
-  background: map-get($colors, 'white') no-repeat top center;
-  background-size: auto 100%;
-  .heroinfo {
-    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-    .scores {
-      .badge {
-        margin: 0 0.25rem;
-        display: inline-block;
-        width: 1rem;
-        height: 1rem;
-        line-height: 1rem;
-        text-align: center;
-        border-radius: 50%;
-        font-size: 0.6154rem;
-        border: 1px solid raba(255, 255, 255, 0.2);
+  @import '../../assets/scss/variables';
+  .top {
+    height: 46vw;
+    background: map-get($colors, 'white') no-repeat top center;
+    background-size: auto 100%;
+    .heroinfo {
+      background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+      .scores {
+        .badge {
+          margin: 0 0.25rem;
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          line-height: 1rem;
+          text-align: center;
+          border-radius: 50%;
+          font-size: 0.6154rem;
+          border: 1px solid raba(255, 255, 255, 0.2);
+        }
       }
     }
   }
-}
-.skills {
-  img.icon {
-    width: 5rem;
-    height: 5rem;
-    border: 3px solid map-get($colors, 'white');
-    &.active {
-      border-color: map-get($colors, 'primary');
+  .skills {
+    img.icon {
+      width: 5rem;
+      height: 5rem;
+      border: 3px solid map-get($colors, 'white');
+      &.active {
+        border-color: map-get($colors, 'primary');
+      }
+      border-radius: 50%;
     }
+  }
+  .item-img {
+    width: 3.6154rem;
+    height: 3.6154rem;
     border-radius: 50%;
   }
-}
-.item-img {
-  width: 3.6154rem;
-  height: 3.6154rem;
-  border-radius: 50%;
-}
 </style>
